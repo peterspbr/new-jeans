@@ -26,11 +26,14 @@ std::string mpzToString(const mpz_class& input) {
 }
 
 int main() {
+    // Do the RSA magic
     Crypto crypto;
 
+    // Gen key pair
     mpz_class privKey = crypto.genPriv();
     mpz_class pubKey  = crypto.genPub();
 
+    // Output key pairs to files
     ofstream priv("./private.key");
     ofstream pub("./public.key");
 
@@ -40,13 +43,44 @@ int main() {
     priv.close();
     pub.close();
 
-    string message = "Hello, world";
+    // Get file contents to encrypt
+    string message;
+
+    ifstream file("data.txt");
+    string line;
+    
+    while (getline(file, line)) {
+        message += line;
+    }
+    
+    file.close();
+
+    // Convert the message from string to int (RSA will work only with int)
     mpz_class messageInt = stringToMpz(message);
 
-    mpz_class ciphertext = crypto.encrypt(messageInt);
+    mpz_class ciphertext = crypto.encrypt(messageInt); // Finally, encrypt the data
 
-    cout << "Ciphertext: ";
-    cout << mpzToString(ciphertext) << endl;
+    // Write encrypted data to file
+    string encrypted_file_path = "data.nj";
+    ofstream encrypted_file(encrypted_file_path);
+    encrypted_file << mpzToString(ciphertext);
+    encrypted_file.close();
+
+    cout << "Ciphertext written to " << encrypted_file_path << endl;
+
+    // Get the encrypted message and decrypt
+    // ** DECRYPTING FOR TESTING PURPOSES **
+    string enc_message;
+    ifstream enc_file("data.nj");
+    string enc_line;
+    
+    while (getline(enc_file, enc_line)) {
+        enc_message += enc_line;
+    }
+    
+    file.close();
+
+    mpz_class plaintext = stringToMpz(enc_message);
 
     cout << "Plaintext: ";
     cout << mpzToString(crypto.decrypt(ciphertext)) << endl;
