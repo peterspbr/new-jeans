@@ -6,6 +6,7 @@
 This ransomware is supposed to be vulnerable to RSA attacks for learning purposes.
 
 Cryptographic system: RSA-4096
+
 Padding scheme: PKCS1
 
 ## TODO
