@@ -4,7 +4,7 @@
 
 class Crypto {
 private:
-    unsigned int byte_lenght = 2048;
+    unsigned int byte_lenght = 4096;
     mpz_class e = 65537;
     mpz_class p = 0;
     mpz_class q = 0;

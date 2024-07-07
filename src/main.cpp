@@ -30,15 +30,24 @@ int main() {
     Crypto crypto;
 
     // Gen key pair
+    cout << "Generating key pair" << endl;
+
     mpz_class privKey = crypto.genPriv();
     mpz_class pubKey  = crypto.genPub();
+
+    cout << "Key pair generation finished." << endl;
 
     // Output key pairs to files
     ofstream priv("./private.key");
     ofstream pub("./public.key");
 
+    cout << "Writting the private key to file." << endl;
     priv << hex << privKey;
+    cout << "Private key written to private.key" << endl;
+
+    cout << "Writting the public key to file." << endl;
     pub << hex << pubKey;
+    cout << "Public key written to public.key" << endl;
 
     priv.close();
     pub.close();
@@ -58,10 +67,14 @@ int main() {
     // Convert the message from string to int (RSA will work only with int)
     mpz_class messageInt = stringToMpz(message);
 
+    cout << "Encrypting data." << endl;
     mpz_class ciphertext = crypto.encrypt(messageInt); // Finally, encrypt the data
 
     // Write encrypted data to file
     string encrypted_file_path = "data.nj";
+
+    cout << "Writting encrypted data to " << encrypted_file_path << endl;
+
     ofstream encrypted_file(encrypted_file_path);
     encrypted_file << mpzToString(ciphertext);
     encrypted_file.close();
@@ -70,6 +83,7 @@ int main() {
 
     // Get the encrypted message and decrypt
     // ** DECRYPTING FOR TESTING PURPOSES **
+    cout << "Decrypting data" << endl;
     string enc_message;
     ifstream enc_file("data.nj");
     string enc_line;
